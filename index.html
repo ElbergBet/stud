@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        label {
+            font-size: 20px;
+        }
+        input {
+            font-size: 20px;
+        }
+        .array {
+            position: absolute;
+            left: 200px;
+        }
+    </style>
+</head>
+<body>
+<label>Число ходов:</label>
+<input type="number" id="number" class="array" size="2" value="1" min="1"> <br><br>
+<label>Исходная позиция:</label>
+<input type="text" id="text" class="array" size="2" value="A2"><br><br>
+<label>Конечная позиция: </label>
+<input type="text" class="array" id="final_position" size="2" value="B3"><br><br>
+<label>Результат: </label>
+<label id="output"></label><br><br>
+<button type="button" onclick="checkNumber()" style="font-size: 15px">Выполнить</button>
+<script>
+    function checkNumber() {
+        var output = document.getElementById('output')
+        output.textContent = ''
+        // var array = document.getElementsByClassName('array')
+        passes_str = document.getElementById('number').value
+        passes = Number.parseInt(passes_str)
+        initial_pos = document.getElementById('text').value
+        final_pos = document.getElementById('final_position').value
+        initial_pos_row = initial_pos[0].charCodeAt(0) - 64
+        initial_pos_col = Number.parseInt(initial_pos[1])
+        final_pos_row = final_pos[0].charCodeAt(0) - 64
+        final_pos_col = Number.parseInt(final_pos[1])
+
+        initial_pos_black = (initial_pos_row + initial_pos_col) % 2 == 0
+        final_pos_black = (final_pos_col + final_pos_row) % 2 == 0
+
+        if (passes >= 2 && (initial_pos_black == final_pos_black)){
+            output.textContent = true
+            return
+        }
+
+        if (Math.abs(initial_pos_row - final_pos_row) == (Math.abs(initial_pos_col - final_pos_col))) {
+            output.textContent = true
+        } else
+            output.textContent = false
+
+    }
+
+    const ALLOWED_LETTERS = /[A-Z0-9]/
+    var input = document.getElementById('text')
+    input.addEventListener("keypress", e => {
+        if (!ALLOWED_LETTERS.test(e.key)) {
+            e.preventDefault();
+        }
+    })
+
+    const ALLOWED_DIGITS = /[0-9]/
+    var number = document.getElementById('number')
+    number.addEventListener("keypress", e => {
+        if (!ALLOWED_DIGITS.test(e.key)) {
+            e.preventDefault();
+        }
+    })
+
+    var final_position = document.getElementById('final_position')
+    final_position.addEventListener("keypress", e => {
+        if (!ALLOWED_LETTERS.test(e.key)) {
+            e.preventDefault();
+        }
+    })
+</script>
+</body>
+</html>
